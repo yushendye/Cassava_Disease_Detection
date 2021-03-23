@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="10dp"
+    tools:context=".DiseaseDetectionActivity">
+
+    <ImageView
+        android:id="@+id/img_cassava"
+        android:src="@drawable/cassava"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_capture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawableLeft="@android:drawable/ic_menu_camera"
+        android:text="@string/str_new_img"
+        android:textAllCaps="false" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_capture"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@android:drawable/ic_dialog_info"
+        android:text="@string/str_report"
+        android:textAllCaps="false" />
+</RelativeLayout>

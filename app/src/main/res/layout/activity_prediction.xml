@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="10dp"
+    tools:context=".Prediction">
+    <ImageView
+        android:background="#ffffff"
+        android:id="@+id/img_captured_plant"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_predict"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_captured_plant"
+        android:text="@string/str_btn_predict"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_to_doc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_predict"
+        android:text="@string/str_btn_add_to_doc"/>
+
+</RelativeLayout>

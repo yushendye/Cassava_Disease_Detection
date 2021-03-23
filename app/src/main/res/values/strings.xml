@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Cassava Disease Detection</string>
+    <string name="str_header">Cassava Leaf Disease Detection</string>
+    <string name="str_developer">RnD by Mr. Yogeshwar Upendra Shendye</string>
+    <string name="str_dev_class">TYMCA</string>
+    <string name="str_college">Student of Finolex Academy of Management and Technology</string>
+
+    <string name="str_capture_btn_txt">Take picture</string>
+    <string name="str_detect_btn_txt">Check the plant for disease</string>
+
+    <string name="str_new_img">Capture new image of a crop</string>
+    <string name="str_report">View Previous reports</string>
+
+    <string name="str_btn_predict">Predict</string>
+    <string name="str_btn_add_to_doc">Add to the report</string>
+</resources>
