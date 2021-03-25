@@ -4,12 +4,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -34,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Collections;
@@ -128,7 +135,11 @@ public class Prediction extends AppCompatActivity {
 
         for (Map.Entry<String, Float> entry : labeledProbability.entrySet()) {
             if (entry.getValue()==maxValueInMap) {
-                savePredictedImage(bmp_img_to_predict, entry.getKey());
+                try{
+                    savePredictedImage(bmp_img_to_predict, entry.getKey());
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
                 Toast.makeText(getApplicationContext(), entry.getKey(), Toast.LENGTH_LONG).show();
             }
         }
@@ -165,36 +176,35 @@ public class Prediction extends AppCompatActivity {
         return channel.map(FileChannel.MapMode.READ_ONLY, start_offset, declared_length);
     }
 
-    private void savePredictedImage(Bitmap image, String label){
-        File media_storage_dir = new File(Environment.getStorageDirectory() , "Detected");
-        if(! media_storage_dir.exists())
-            media_storage_dir.mkdir();
+    private void savePredictedImage(Bitmap bitmap, String name) throws IOException{
+        boolean saved;
+        OutputStream fos;
+        name = name.trim();
+        name += System.currentTimeMillis();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ContentResolver resolver = getApplicationContext().getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + "Detected");
+            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            fos = resolver.openOutputStream(imageUri);
+        } else {
+            String imagesDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM).toString() + File.separator + "Detected";
 
-        String file_name = label + "_" + System.currentTimeMillis() + ".jpeg";
-        File file = new File(media_storage_dir, file_name);
+            File file = new File(imagesDir);
 
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream(file);
-        }catch (IOException exception){
-            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+            if (!file.exists()) {
+                file.mkdir();
+            }
+
+            File image = new File(imagesDir, name + ".png");
+            fos = new FileOutputStream(image);
         }
 
-        image.compress(Bitmap.CompressFormat.JPEG, 224, fileOutputStream);
-        Toast.makeText(getApplicationContext(), "Record saved successfully!!", Toast.LENGTH_LONG).show();
-
-        try {
-            fileOutputStream.flush();
-        }catch (IOException e){
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-
-        try {
-            fileOutputStream.close();
-        }catch (IOException e){
-            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
+        saved = bitmap.compress(Bitmap.CompressFormat.PNG, 500, fos);
+        fos.flush();
+        fos.close();
     }
 }
