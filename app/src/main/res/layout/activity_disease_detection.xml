@@ -4,21 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:padding="10dp"
     tools:context=".DiseaseDetectionActivity">
 
     <ImageView
-        android:id="@+id/img_cassava"
-        android:src="@drawable/cassava"
+        android:id="@+id/cam_camera"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        android:layout_height="400dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/cassava"
+        />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_capture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/cam_camera"
         android:drawableLeft="@android:drawable/ic_menu_camera"
+        android:onClick="capture_image"
         android:text="@string/str_new_img"
         android:textAllCaps="false" />
 
@@ -28,6 +30,7 @@
         android:layout_below="@id/btn_capture"
         android:layout_centerHorizontal="true"
         android:drawableLeft="@android:drawable/ic_dialog_info"
+        android:onClick="view_reports"
         android:text="@string/str_report"
         android:textAllCaps="false" />
 </RelativeLayout>
