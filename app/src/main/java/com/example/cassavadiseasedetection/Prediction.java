@@ -21,7 +21,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.opencsv.CSVWriter;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
@@ -39,18 +42,23 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Prediction extends AppCompatActivity {
     ImageView imv_captured;
     private int CAM_PERM_ID = 101;
+
     Bitmap bmp_img_to_predict;
+    TextView txt_detected;
 
     TensorImage inputImageBuffer;
     Interpreter tflite;
@@ -74,7 +82,7 @@ public class Prediction extends AppCompatActivity {
         setContentView(R.layout.activity_prediction);
 
         imv_captured = findViewById(R.id.img_captured_plant);
-
+        txt_detected = findViewById(R.id.txt_detected);
 
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(camera_intent, CAM_PERM_ID);
@@ -104,6 +112,7 @@ public class Prediction extends AppCompatActivity {
     }
 
     public void predict(View view){
+        String saved_as = "";
         int image_tensor_index = 0;
         int[] image_shape = tflite.getInputTensor(image_tensor_index).shape();
         image_size_x = image_shape[1];
@@ -136,11 +145,26 @@ public class Prediction extends AppCompatActivity {
         for (Map.Entry<String, Float> entry : labeledProbability.entrySet()) {
             if (entry.getValue()==maxValueInMap) {
                 try{
-                    savePredictedImage(bmp_img_to_predict, entry.getKey());
+                    saved_as = savePredictedImage(bmp_img_to_predict, entry.getKey());
                 }catch (Exception e){
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
-                Toast.makeText(getApplicationContext(), entry.getKey(), Toast.LENGTH_LONG).show();
+                txt_detected.setText(entry.getKey());
+                txt_detected.setVisibility(View.VISIBLE);
+
+                HashMap<String, Integer> map = new HashMap<String, Integer>();
+                map.put("Cassava Bacterial Blight (CBB)", 0);
+                map.put("Cassava Brown Streak Disease (CBSD)", 1);
+                map.put("Cassava Green Mottle (CGM)", 2);
+                map.put("Cassava Mosaic Disease (CMD)", 3);
+                map.put("Healthy", 4);
+
+                int lbl = 0;
+                if(map.get(entry.getKey()) != null)
+                    lbl = map.get(entry.getKey());
+                else
+                    lbl = 0;
+                writeToCSV(saved_as, lbl);
             }
         }
     }
@@ -166,7 +190,7 @@ public class Prediction extends AppCompatActivity {
     }
 
     private MappedByteBuffer loadModel(Activity activity) throws IOException {
-        AssetFileDescriptor assetFileDescriptor = activity.getAssets().openFd("model.tflite");
+        AssetFileDescriptor assetFileDescriptor = activity.getAssets().openFd("cassava_model.tflite");
         FileInputStream fileInputStream = new FileInputStream(assetFileDescriptor.getFileDescriptor());
         FileChannel channel = fileInputStream.getChannel();
 
@@ -176,16 +200,16 @@ public class Prediction extends AppCompatActivity {
         return channel.map(FileChannel.MapMode.READ_ONLY, start_offset, declared_length);
     }
 
-    private void savePredictedImage(Bitmap bitmap, String name) throws IOException{
+    private String savePredictedImage(Bitmap bitmap, String name) throws IOException{
         boolean saved;
         OutputStream fos;
-        name = name.trim();
+        name = name.replaceAll("\\s", "");
         name += System.currentTimeMillis();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             ContentResolver resolver = getApplicationContext().getContentResolver();
             ContentValues contentValues = new ContentValues();
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + "Detected");
             Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
             fos = resolver.openOutputStream(imageUri);
@@ -198,13 +222,47 @@ public class Prediction extends AppCompatActivity {
             if (!file.exists()) {
                 file.mkdir();
             }
-
-            File image = new File(imagesDir, name + ".png");
+            File image = new File(imagesDir, name + ".jpeg");
             fos = new FileOutputStream(image);
         }
 
-        saved = bitmap.compress(Bitmap.CompressFormat.PNG, 500, fos);
+        saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        if(saved)
+            Toast.makeText(getApplicationContext(), "Image saved!", Toast.LENGTH_LONG);
+        else
+            Toast.makeText(getApplicationContext(), "Could not save image", Toast.LENGTH_LONG).show();
         fos.flush();
         fos.close();
+
+        return name + ".jpeg";
+    }
+
+    public void writeToCSV(String filename, int label){
+        String base_dir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+        String file_name = "New_Detections.csv";
+        String abs_path = base_dir + File.separator + file_name;
+        File csv_file = new File(abs_path);
+
+        Toast.makeText(getApplicationContext(), abs_path, Toast.LENGTH_LONG).show();
+
+        CSVWriter writer;
+        try{
+            if (csv_file.exists() && ! csv_file.isDirectory()) {
+                writer = new CSVWriter(new FileWriter(abs_path, true));
+                String[] data = {filename, String.valueOf(label)};
+
+                writer.writeNext(data);
+                Toast.makeText(getApplicationContext(), "Successfully updated " + file_name, Toast.LENGTH_LONG).show();
+                writer.close();
+            }else{
+                csv_file.createNewFile();
+                writer = new CSVWriter(new FileWriter(abs_path));
+                String[] data = {filename, String.valueOf(label)};
+                writer.writeNext(data);
+                writer.close();
+            }
+        }catch (IOException e){
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }

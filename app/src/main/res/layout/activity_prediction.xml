@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:padding="10dp"
     tools:context=".Prediction">
     <ImageView
@@ -12,13 +11,24 @@
         android:id="@+id/img_captured_plant"
         android:layout_width="match_parent"
         android:layout_height="350dp"/>
+    <TextView
+        android:id="@+id/txt_detected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_captured_plant"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:text="Detected Disease"/>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_predict"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="predict"
-        android:layout_below="@id/img_captured_plant"
+        android:layout_below="@id/txt_detected"
         android:text="@string/str_btn_predict"/>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_to_doc"
