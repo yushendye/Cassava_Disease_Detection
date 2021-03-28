@@ -144,28 +144,36 @@ public class Prediction extends AppCompatActivity {
 
         for (Map.Entry<String, Float> entry : labeledProbability.entrySet()) {
             if (entry.getValue()==maxValueInMap) {
-                try{
+                /*try{
                     saved_as = savePredictedImage(bmp_img_to_predict, entry.getKey());
                 }catch (Exception e){
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+                }*/
                 txt_detected.setText(entry.getKey());
                 txt_detected.setVisibility(View.VISIBLE);
-
-                HashMap<String, Integer> map = new HashMap<String, Integer>();
-                map.put("Cassava Bacterial Blight (CBB)", 0);
-                map.put("Cassava Brown Streak Disease (CBSD)", 1);
-                map.put("Cassava Green Mottle (CGM)", 2);
-                map.put("Cassava Mosaic Disease (CMD)", 3);
-                map.put("Healthy", 4);
-
-                int lbl = 0;
-                if(map.get(entry.getKey()) != null)
-                    lbl = map.get(entry.getKey());
-                else
-                    lbl = 0;
-                writeToCSV(saved_as, lbl);
             }
+        }
+    }
+
+    public void addToReport(View view){
+        String prediction = txt_detected.getText().toString();
+        try {
+            String saved_as = savePredictedImage(bmp_img_to_predict, prediction);
+            HashMap<String, Integer> map = new HashMap<String, Integer>();
+            map.put("Cassava Bacterial Blight (CBB)", 0);
+            map.put("Cassava Brown Streak Disease (CBSD)", 1);
+            map.put("Cassava Green Mottle (CGM)", 2);
+            map.put("Cassava Mosaic Disease (CMD)", 3);
+            map.put("Healthy", 4);
+
+            int lbl = 0;
+            if(map.get(prediction) != null)
+                lbl = map.get(prediction);
+            else
+                lbl = 0;
+            writeToCSV(saved_as, lbl);
+        }catch (IOException e){
+            Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -222,7 +230,7 @@ public class Prediction extends AppCompatActivity {
             if (!file.exists()) {
                 file.mkdir();
             }
-            File image = new File(imagesDir, name + ".jpeg");
+            File image = new File(imagesDir, name + ".jpg");
             fos = new FileOutputStream(image);
         }
 
@@ -234,7 +242,7 @@ public class Prediction extends AppCompatActivity {
         fos.flush();
         fos.close();
 
-        return name + ".jpeg";
+        return name + ".jpg";
     }
 
     public void writeToCSV(String filename, int label){
@@ -242,8 +250,6 @@ public class Prediction extends AppCompatActivity {
         String file_name = "New_Detections.csv";
         String abs_path = base_dir + File.separator + file_name;
         File csv_file = new File(abs_path);
-
-        Toast.makeText(getApplicationContext(), abs_path, Toast.LENGTH_LONG).show();
 
         CSVWriter writer;
         try{
@@ -260,6 +266,7 @@ public class Prediction extends AppCompatActivity {
                 String[] data = {filename, String.valueOf(label)};
                 writer.writeNext(data);
                 writer.close();
+                Toast.makeText(getApplicationContext(), "Successfully updated " + file_name, Toast.LENGTH_LONG).show();
             }
         }catch (IOException e){
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
