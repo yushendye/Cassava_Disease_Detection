@@ -1,6 +1,7 @@
 package com.example.cassavadiseasedetection;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class DiseaseAdapter extends RecyclerView.Adapter<DiseaseAdapter.DiseaseH
     @Override
     public void onBindViewHolder(@NonNull DiseaseHolder holder, int position) {
         Disease disease_item = detected_diseases.get(position);
+        holder.image.setBackgroundColor(Color.rgb(255,255 ,255));
         holder.image.setImageBitmap(disease_item.getImage());
         holder.label.setText(disease_item.getLabel());
     }
