@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@drawable/background"
     tools:context=".Prediction">
     <ImageView
         android:background="#000000"
@@ -29,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="predict"
+        android:textAllCaps="false"
         android:layout_below="@id/txt_detected"
         android:text="@string/str_btn_predict"/>
     <com.google.android.material.button.MaterialButton
@@ -36,7 +38,16 @@
         android:layout_width="match_parent"
         android:onClick="addToReport"
         android:layout_height="wrap_content"
+        android:textAllCaps="false"
         android:layout_below="@id/btn_predict"
+        android:text="@string/str_btn_add_to_doc"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_new_img_capture"
+        android:layout_width="match_parent"
+        android:onClick="re_capture"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:layout_below="@id/btn_add_to_doc"
         android:text="@string/str_btn_add_to_doc"/>
 
 </RelativeLayout>

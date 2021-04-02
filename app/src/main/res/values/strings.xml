@@ -18,6 +18,102 @@
     <string name="str_predicted">Label of the predicted image as per the model</string>
     <string name="str_disease_info">Information about the disease Cause of the disease Severity etc</string>
     <string name="str_treatment">Information about the treatment of the disease, preventive measures etc</string>
+
+    <string name="str_cbb">Cassava Bacterial Blight (CBB)</string>
+    <string name="str_cbb_info">
+        Originally discovered in Brazil in 1912, the disease has followed cultivation of cassava across the world.
+        Among diseases which afflict cassava worldwide, bacterial blight causes the largest losses in terms of yield.
+    </string>
+    <string name="str_cbb_cure">
+        Several disease management techniques have been developed to control Cbb incidence and dissemination. Cultural
+        practices have been used to decrease the incidence of the pathogen or delay the effect of the disease in the field.
+        Pruning or total extirpation of infected plant tissue, weed removal, use of certified seeds, bacterial analysis of
+        stem cuttings and crop rotation are used the most to limit the disease presence in the field.Transplantation of
+        clones is the most common mode of propagation of this crop so the most important control of bacterial wilt of
+        cassava is planting uninfected clones. In areas where bacterial wilt has not yet been established, it is important
+        to raise a new crop from a meristem culture certifiably free of disease. In areas where the disease is already
+        prevalent, great care should be taken to ensure clippings are taken from healthy plants and even then from the
+        highly lignified portion at the base of cassava plants which appear healthy. Seeds are known to be able harbor the
+        pathogen, but successful sanitation measures have been described. Infected seed immersed in water at 60 °C
+        showed no sign of bacterial survival while the seed showed no reduction in germination potential.Furthermore,
+        the sanitation of tools and big machinery are crucial to avoid the infection of healthy plants through mechanical
+        inoculation. In cropping and crop rotation have both been implemented in cassava cultivation and have been
+        successful.In the instance of crop rotation following an infected cassava crop, deep soil turnover is
+        recommended and a period of six months should be observed before cassava is planted again; X.axonopodis is a
+        poor soil survivor and does not sporulate so this time frame should clear crop fields of inoculum.
+        It is also important to clear the field of weeds as X. axonopodis is known to survive much longer
+        epiphytically on weeds than it does in soil.
+    </string>
+
+    <string name="str_cbsd">Cassava Brown Stake Disease</string>
+    <string name="str_cbsd_info">
+        CBSD is characterized by severe chlorosis and necrosis on infected leaves, giving them a yellowish, mottled
+        appearance.Chlorosis may be associated with the veins, spanning from the mid vein, secondary and tertiary veins,
+        or rather in blotches unconnected to veins. Leaf symptoms vary greatly depending on a variety of factors.
+        The growing conditions (i.e. altitude, rainfall quantity), plant age, and the virus species account for these
+        differences.Brown streaks may appear on the stems of the cassava plant. Also, a dry brown-black necrotic rot of
+        the cassava tuber exists, which may progress from a small lesion to the whole root. Finally, the roots can become
+        constricted due to the tuber rot, stunting growth.Typically the affected plants do not possess all of these
+        characteristics, but those that are severely affected may. Farmers may be unaware of their infected cassava
+        crops until they are harvested and see the tuber lesions because leaves are asymptomatic.The cassava mosaic
+        virus (CMV) is another cassava virus that exhibits foliar symptoms similar to CBSD, but they are more obvious.
+    </string>
+    <string name="str_cbsd_cure">
+        Management tools are still being explored for the control of CBSD, and progress has been slow.The development of
+        cassava with resistance to both CMD and CBSD is needed.In a few cassava varieties, natural resistance has been
+        found against UBCSV. Widespread distribution of germplasm of these varieties can reduce disease incidence on
+        a large scale. Furthermore, screening for resistance in farmer-preferred cassava genotypes in Africa is crucial
+        for effective CBSD control and management.
+    </string>
+
+    <string name="str_cgm">Cassava Green Mottle (CGM)</string>
+    <string name="str_cgm_info">
+        It is only known from cassava, and only from Choiseul (and possibly Malaita), nowhere else in the world. In the
+        lab, several plant species have been infected with this virus; these species are known as "indicator" plants
+        and are used to identify and characterise many kinds of viruses: Chenopodium, Nicotiana (tobacco), Phaseolus
+        (French bean), Cucumis (cucumber), Ricinus (castor oil) and Solanum (potato). Interestingly, Ipomoea
+        (sweetpotato) was also infected in these tests. But whether or not infection occurs in the field is unknown.
+    </string>
+    <string name="str_cgm_cure">
+        Surveys carried out in Solomon Islands in the late 1970s failed to find the disease anywhere but on the island of
+        Choiseul. It was not found in the nearby Shortland Islands. People on Choiseul were made aware of the disease and
+        asked not to take cuttings to other islands. However, there are no laws restricting the movement of planting
+        material between islands of the country, so compliance is voluntary. Choiseul is near the island of Bougainville in
+        Papua New Guinea, and residents of both islands move between the two, but it is not known if the virus disease
+        occurs in Bougainville.
+    </string>
+
+    <string name="str_cmd">Cassava Mosaic Disease (CMD)</string>
+    <string name="str_cmd_info">
+        CMD is caused by a virus belonging to the virus family, Geminiviridae, and could be transmitted through two ways:
+        through stakes from infected cassava mother plants, or, through the whitefly vector – the insect, Bemisia tabaci.
+        If infected, cassava plants display a number of symptoms including stunted growth, as well as mosaic, deformed,
+        twisted, and smaller, leaves. Depending on a number of factors including cassava variety, virus isolate, age of
+        the plant at the time of infection, and mode of infection, CMD-affected plants produce few or no roots. Infection
+        through cuttings is known to be more damaging than infection through whiteflies.
+    </string>
+    <string name="str_cmd_cure">
+        Control strategies for cassava mosaic disease include sanitation and plant resistance. In this case, sanitation
+        means using cuttings from healthy plants to start with a healthy plot and maintaining that healthy plot by
+        identifying unhealthy plants and immediately removing them. This strategy does not protect them from being
+        inoculated by whiteflies, but research shows that the virus is more aggressive in plants infected from
+        contaminated cuttings than by insect vectors. There are also specific varieties that fare better against
+        some viruses than others, so plant resistance is possible.For example, hybrids that are a result of
+        crossing cassava and other species, such as Manihot melanobasis and M. glaziovii, have been shown to have
+        considerable resistance to CMV.
+    </string>
+
+    <string name="str_healthy">Healthy</string>
+    <string name="str_healthy_info">
+        The crop is healthy. It still requires some monitoring so that it will be safe from diseases even in the future.
+    </string>
+    <string name="str_healthy_cure">
+        The crop is healthy. It still requires some monitoring so that it will be safe from diseases even in the future.
+    </string>
+
+    <string name="str_lbl_name">Category : </string>
+    <string name="str_lbl_info">Information : </string>
+    <string name="str_lbl_cure">Known treatments / preventive measures : </string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.

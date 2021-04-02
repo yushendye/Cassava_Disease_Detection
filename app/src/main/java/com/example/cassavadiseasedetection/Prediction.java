@@ -155,6 +155,11 @@ public class Prediction extends AppCompatActivity {
         }
     }
 
+    public void re_capture(View view){
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(camera_intent, CAM_PERM_ID);
+    }
+
     public void addToReport(View view){
         String prediction = txt_detected.getText().toString();
         try {

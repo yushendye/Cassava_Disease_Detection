@@ -5,6 +5,15 @@ import android.graphics.Bitmap;
 public class Disease {
     Bitmap image;
     String label;
+    String image_id;
+
+    public String getImage_id() {
+        return image_id;
+    }
+
+    public void setImage_id(String image_id) {
+        this.image_id = image_id;
+    }
 
     public Bitmap getImage() {
         return image;
@@ -26,8 +35,9 @@ public class Disease {
 
     }
     
-    public Disease(Bitmap image, String label) {
+    public Disease(Bitmap image, String label, String image_id) {
         this.image = image;
         this.label = label;
+        this.image_id = image_id;
     }
 }

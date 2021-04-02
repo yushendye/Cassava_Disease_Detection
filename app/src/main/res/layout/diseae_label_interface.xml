@@ -11,9 +11,9 @@
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/img_list_crop"
-            android:layout_width="210dp"
-            android:layout_height="210dp"
-            android:background="@drawable/cassava"/>
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#ffffff"/>
         <TextView
             android:id="@+id/txt_list_disease_name"
             android:layout_width="wrap_content"
@@ -21,8 +21,6 @@
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/img_list_crop"
             android:textSize="18dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
             android:text="@string/str_predicted"
             android:textColor="@color/black"/>
     </RelativeLayout>

@@ -5,20 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
+    android:background="@drawable/background"
     tools:context=".DiseaseDetectionActivity">
 
     <ImageView
-        android:id="@+id/cam_camera"
+        android:id="@+id/img_plant_img"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/cassava"
-        />
+        android:src="@drawable/cassava" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_capture"
+        android:background="@drawable/round_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cam_camera"
+        android:layout_below="@id/img_plant_img"
         android:drawableLeft="@android:drawable/ic_menu_camera"
         android:onClick="capture_image"
         android:text="@string/str_new_img"
@@ -27,7 +28,9 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_below="@id/btn_capture"
+        android:background="@drawable/round_btn"
         android:layout_centerHorizontal="true"
         android:drawableLeft="@android:drawable/ic_dialog_info"
         android:onClick="view_reports"

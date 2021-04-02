@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:padding="10dp"
+    tools:context=".DiseaseDetail">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_det_crop"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/cassava" />
+
+            <TextView
+                android:textStyle="bold"
+                android:id="@+id/txt_lbl_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_det_crop"
+                android:layout_marginTop="20dp"
+                android:text="@string/str_lbl_name"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/txt_det_disease_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_lbl_name"
+                android:layout_marginTop="3dp"
+                android:text="@string/str_predicted"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/txt_info"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_det_disease_name"
+                android:layout_marginTop="20dp"
+                android:text="@string/str_lbl_info"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/txt_det_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_info"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/border_box"
+                android:layout_marginTop="3dp"
+                android:padding="5dp"
+                android:text="@string/str_disease_info"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/txt_cure"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_det_info"
+                android:layout_marginTop="20dp"
+                android:text="@string/str_lbl_cure"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/txt_det_measures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txt_cure"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/border_box"
+                android:padding="5dp"
+                android:text="@string/str_treatment"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

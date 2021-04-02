@@ -1,6 +1,8 @@
 package com.example.cassavadiseasedetection;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,7 +29,6 @@ public class ViewReports extends AppCompatActivity {
         setContentView(R.layout.activity_view_reports);
 
         rcv_disease_list = findViewById(R.id.rcv_disease_list);
-        diseases_from_csv = new ArrayList<>();
 
         populateDiseasesFromCSV();
 
@@ -35,10 +36,12 @@ public class ViewReports extends AppCompatActivity {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getApplicationContext());
 
         rcv_disease_list.setLayoutManager(manager);
+        rcv_disease_list.setItemAnimator(new DefaultItemAnimator());
         rcv_disease_list.setAdapter(adapter);
     }
 
     public void populateDiseasesFromCSV(){
+        diseases_from_csv = new ArrayList<Disease>();
         CSVReader reader;
         String base_dir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
         String csv_file_name = "New_Detections.csv";
@@ -52,13 +55,11 @@ public class ViewReports extends AppCompatActivity {
             try{
                 reader = new CSVReader(new FileReader(absolute_path));
 
-                Disease single_disease = new Disease();
-
                 String disease_name = "";
 
                 String[] read_data;
-
                 while ((read_data = reader.readNext()) != null){
+                    Disease single_disease = new Disease();
                     String img_name = read_data[0];
                     String label = read_data[1];
 
@@ -79,13 +80,12 @@ public class ViewReports extends AppCompatActivity {
                         case "4":
                             disease_name = "Healthy";
                             break;
-                        default:
-                            Toast.makeText(getApplicationContext(), "Error has occurred!!", Toast.LENGTH_LONG).show();
                     }
 
                     Bitmap disease_image = BitmapFactory.decodeFile(image_path);
                     single_disease.setImage(disease_image);
                     single_disease.setLabel(disease_name);
+                    single_disease.setImage_id(img_name);
 
                     diseases_from_csv.add(single_disease);
                 }
