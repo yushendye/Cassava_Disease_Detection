@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_lbl_name"
                 android:layout_marginTop="3dp"
+                android:textStyle="bold"
                 android:text="@string/str_predicted"
                 android:textColor="@color/black"
                 android:textSize="18dp" />

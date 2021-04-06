@@ -17,6 +17,8 @@
             android:id="@+id/lbl_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:text="@string/str_header"
             android:textSize="25dp"
             android:textColor="@color/black" />

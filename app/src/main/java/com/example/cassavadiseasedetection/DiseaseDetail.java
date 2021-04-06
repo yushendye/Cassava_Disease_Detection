@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -33,7 +32,6 @@ public class DiseaseDetail extends AppCompatActivity {
     void update(String image_id, String label){
         String base_dir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
         String abs_path = base_dir + File.separator + "DCIM" + File.separator + "Detected" + File.separator + image_id;
-        Toast.makeText(this, abs_path, Toast.LENGTH_LONG).show();
         img_disease_image.setBackgroundColor(Color.WHITE);
         img_disease_image.setImageBitmap(BitmapFactory.decodeFile(abs_path));
         switch (label){

@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CassavaDiseaseDetection">
-        <activity android:name=".DiseaseDetail"></activity>
+        <activity android:name=".DiseaseDetail"/>
         <activity android:name=".ViewReports" />
         <activity android:name=".Prediction" />
         <activity android:name=".DiseaseDetectionActivity" />

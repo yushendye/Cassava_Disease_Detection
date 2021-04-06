@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -19,7 +22,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +47,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,14 +63,17 @@ import java.util.Map;
 public class Prediction extends AppCompatActivity {
     ImageView imv_captured;
     private int CAM_PERM_ID = 101;
+    private int GALLERY_ID = 102;
 
     Bitmap bmp_img_to_predict;
     TextView txt_detected;
+    Dialog hover_dialog;
 
     TensorImage inputImageBuffer;
     Interpreter tflite;
     TensorBuffer output_probability_buffer;
     TensorProcessor probability_processor;
+
     private List<String> labels;
 
     float IMAGE_MEAN = 0.0f;
@@ -84,8 +94,8 @@ public class Prediction extends AppCompatActivity {
         imv_captured = findViewById(R.id.img_captured_plant);
         txt_detected = findViewById(R.id.txt_detected);
 
-        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camera_intent, CAM_PERM_ID);
+        //Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //startActivityForResult(camera_intent, CAM_PERM_ID);
 
         try {
             tflite = new Interpreter(loadModel(this));
@@ -106,11 +116,46 @@ public class Prediction extends AppCompatActivity {
                 Bitmap captured_bmp = (Bitmap)data.getExtras().get("data");
                 Drawable bitmap_drawable = new BitmapDrawable(getResources(), captured_bmp);
                 imv_captured.setImageDrawable(bitmap_drawable);
-
+                imv_captured.setBackgroundColor(Color.WHITE);
                 bmp_img_to_predict = getBitmap(captured_bmp);
+                break;
+            case 102:
+                Uri uri = data.getData();
+                Bitmap uploaded_drawable;
+                try{
+                    uploaded_drawable = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    imv_captured.setBackgroundColor(Color.WHITE);
+                    BitmapDrawable drawable = new BitmapDrawable(uploaded_drawable);
+                    imv_captured.setImageDrawable(drawable);
+
+                    bmp_img_to_predict = getBitmap(uploaded_drawable);
+                }catch (IOException e){
+                    Toast.makeText(getApplicationContext(), e.getCause().toString(), Toast.LENGTH_LONG).show();
+                }
         }
     }
 
+    public void captureImage(View view){
+        hover_dialog.dismiss();
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(camera_intent, CAM_PERM_ID);
+    }
+
+    public void uploadImage(View view){
+        hover_dialog.dismiss();
+        Intent gallery_intent = new Intent();
+        gallery_intent.setType("image/*");
+        gallery_intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(gallery_intent, GALLERY_ID);
+    }
+
+    public void showHover(View view){
+        hover_dialog = new Dialog(this);
+        hover_dialog.setContentView(R.layout.hover_options);
+        hover_dialog.setCancelable(true);
+        hover_dialog.show();
+        //Toast.makeText(this, "so..you clicked!!", Toast.LENGTH_SHORT).show();
+    }
     public void predict(View view){
         String saved_as = "";
         int image_tensor_index = 0;
@@ -203,7 +248,7 @@ public class Prediction extends AppCompatActivity {
     }
 
     private MappedByteBuffer loadModel(Activity activity) throws IOException {
-        AssetFileDescriptor assetFileDescriptor = activity.getAssets().openFd("cassava_model.tflite");
+        AssetFileDescriptor assetFileDescriptor = activity.getAssets().openFd("model2.tflite");
         FileInputStream fileInputStream = new FileInputStream(assetFileDescriptor.getFileDescriptor());
         FileChannel channel = fileInputStream.getChannel();
 

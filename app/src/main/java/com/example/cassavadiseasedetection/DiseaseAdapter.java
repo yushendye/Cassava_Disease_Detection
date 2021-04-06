@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +43,6 @@ public class DiseaseAdapter extends RecyclerView.Adapter<DiseaseAdapter.DiseaseH
         holder.label.setText(disease_item.getLabel());
 
         holder.rl_row.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "Item no " + position, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(v.getContext(), DiseaseDetail.class);
             intent.putExtra("image_name", disease_item.getImage_id());
             intent.putExtra("label", disease_item.getLabel());

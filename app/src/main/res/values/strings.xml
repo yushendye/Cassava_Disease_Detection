@@ -13,11 +13,15 @@
 
     <string name="str_btn_predict">Predict</string>
     <string name="str_btn_add_to_doc">Add to the report</string>
+    <string name="str_btn_recapture">Click another image</string>
     <string name="title_activity_view_reports">ViewReports</string>
 
     <string name="str_predicted">Label of the predicted image as per the model</string>
     <string name="str_disease_info">Information about the disease Cause of the disease Severity etc</string>
     <string name="str_treatment">Information about the treatment of the disease, preventive measures etc</string>
+
+    <string name="str_hov_capture">Capture image of cassava plant</string>
+    <string name="str_hov_upload">Upload image of cassava plant</string>
 
     <string name="str_cbb">Cassava Bacterial Blight (CBB)</string>
     <string name="str_cbb_info">
