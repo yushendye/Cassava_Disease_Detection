@@ -22,11 +22,9 @@ public class Disease {
     public void setImage(Bitmap image) {
         this.image = image;
     }
-
     public String getLabel() {
         return label;
     }
-
     public void setLabel(String label) {
         this.label = label;
     }

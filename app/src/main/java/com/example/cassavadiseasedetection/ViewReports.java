@@ -6,9 +6,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.opencsv.CSVReader;
@@ -22,6 +25,7 @@ import java.util.List;
 public class ViewReports extends AppCompatActivity {
     RecyclerView rcv_disease_list;
     List<Disease> diseases_from_csv;
+    Button btn_comm_results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class ViewReports extends AppCompatActivity {
         setContentView(R.layout.activity_view_reports);
 
         rcv_disease_list = findViewById(R.id.rcv_disease_list);
+        btn_comm_results = findViewById(R.id.btn_comm_res);
 
         populateDiseasesFromCSV();
 
@@ -51,7 +56,9 @@ public class ViewReports extends AppCompatActivity {
 
         if(! csv_file.exists()){
             Toast.makeText(getApplicationContext(), "You have not detected any diseases yet, so no CSV File found!!", Toast.LENGTH_LONG).show();
+            btn_comm_results.setVisibility(View.GONE);
         }else{
+            btn_comm_results.setVisibility(View.VISIBLE);
             try{
                 reader = new CSVReader(new FileReader(absolute_path));
 
@@ -93,6 +100,11 @@ public class ViewReports extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    public void communicateReports(View view){
+        Intent comm_intent = new Intent(ViewReports.this, CommunicateReports.class);
+        startActivity(comm_intent);
     }
 
 

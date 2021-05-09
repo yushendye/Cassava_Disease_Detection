@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 
 public class DiseaseDetail extends AppCompatActivity {
@@ -32,8 +34,8 @@ public class DiseaseDetail extends AppCompatActivity {
     void update(String image_id, String label){
         String base_dir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
         String abs_path = base_dir + File.separator + "DCIM" + File.separator + "Detected" + File.separator + image_id;
-        img_disease_image.setBackgroundColor(Color.WHITE);
-        img_disease_image.setImageBitmap(BitmapFactory.decodeFile(abs_path));
+        img_disease_image.setBackgroundResource(R.drawable.background);
+        Picasso.get().load("file://"  + abs_path).into(img_disease_image);
         switch (label){
             case "Cassava Bacterial Blight (CBB)":
                 txt_disease_name.setText(R.string.str_cbb);

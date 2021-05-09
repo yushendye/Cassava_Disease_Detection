@@ -12,4 +12,13 @@
         android:id="@+id/rcv_disease_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_comm_res"
+        android:layout_width="match_parent"
+        android:textAllCaps="false"
+        android:text="@string/str_btn_comm"
+        android:onClick="communicateReports"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

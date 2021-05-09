@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".CommunicateReports">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_dev_info"
+        android:layout_width="wrap_content"
+        android:text="@string/str_dev_info"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:textSize="18dp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_dev_note"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/lbl_dev_info"
+        android:text="@string/str_dev_note"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_dev_note1"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/lbl_dev_note"
+        android:text="@string/str_dev_note1"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_dev_note2"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/lbl_dev_note1"
+        android:text="@string/str_dev_note2"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/lbl_dev_note3"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/lbl_dev_note2"
+        android:text="@string/str_dev_note3"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/str_btn_comm"
+        android:layout_marginTop="15dp"
+        android:onClick="sendReports"
+        android:textAllCaps="false"
+        android:layout_below="@id/lbl_dev_note3"/>
+
+</RelativeLayout>

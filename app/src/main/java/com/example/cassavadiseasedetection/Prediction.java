@@ -2,6 +2,7 @@ package com.example.cassavadiseasedetection;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,9 +15,12 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,13 +28,17 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.opencsv.CSVWriter;
+import com.squareup.picasso.Picasso;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
@@ -76,11 +84,12 @@ public class Prediction extends AppCompatActivity {
 
     private List<String> labels;
 
+    String current_image_path;
     float IMAGE_MEAN = 0.0f;
     float IMAGE_STD = 1.0f;
 
-    float PROBABILITY_MEAN = 0.0f;
-    float PROBABILITY_STD = 255.0f;
+    float PROBABILITY_MEAN = 127.5f;
+    float PROBABILITY_STD = 127.5f;
 
     int image_size_x = 224;
     int image_size_y = 224;
@@ -90,18 +99,27 @@ public class Prediction extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prediction);
-
         imv_captured = findViewById(R.id.img_captured_plant);
         txt_detected = findViewById(R.id.txt_detected);
 
         //Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         //startActivityForResult(camera_intent, CAM_PERM_ID);
-
+        current_image_path = "";
+        Snackbar.make(findViewById(R.id.img_captured_plant), R.string.str_hint_tap, Snackbar.LENGTH_LONG).show();
         try {
             tflite = new Interpreter(loadModel(this));
+            //Toast.makeText(getApplicationContext(), "Model loaded!!", Toast.LENGTH_LONG).show();
         }catch (IOException e){
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menu_inflater = getMenuInflater();
+        menu_inflater.inflate(R.menu.menu, menu);
+
+        return true;
     }
 
     Bitmap getBitmap(Bitmap bitmap){
@@ -111,33 +129,87 @@ public class Prediction extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        imv_captured.setBackgroundResource(R.drawable.background);
         switch (requestCode){
             case 101:
-                Bitmap captured_bmp = (Bitmap)data.getExtras().get("data");
-                Drawable bitmap_drawable = new BitmapDrawable(getResources(), captured_bmp);
-                imv_captured.setImageDrawable(bitmap_drawable);
-                imv_captured.setBackgroundColor(Color.WHITE);
-                bmp_img_to_predict = getBitmap(captured_bmp);
+                Thread save_thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Bitmap proper_image = Picasso.get().load("file://" + current_image_path).get();
+                            bmp_img_to_predict = getBitmap(proper_image);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                save_thread.start();
+
+                Picasso.get().
+                        load("file://" + current_image_path).
+                        resize(0, 512).
+                        into(imv_captured);
+                //Toast.makeText(getApplicationContext(), current_image_path, Toast.LENGTH_LONG).show();
                 break;
             case 102:
                 Uri uri = data.getData();
-                Bitmap uploaded_drawable;
+                save_thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            Bitmap proper_image = Picasso.get().
+                                    load(uri).get();
+                            bmp_img_to_predict = getBitmap(proper_image);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                save_thread.start();
+                Picasso.get().load(uri).resize(0, 512).into(imv_captured);
+                /*
                 try{
                     uploaded_drawable = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                    imv_captured.setBackgroundColor(Color.WHITE);
+                    imv_captured.setBackgroundResource(R.drawable.background);
                     BitmapDrawable drawable = new BitmapDrawable(uploaded_drawable);
                     imv_captured.setImageDrawable(drawable);
-
                     bmp_img_to_predict = getBitmap(uploaded_drawable);
                 }catch (IOException e){
                     Toast.makeText(getApplicationContext(), e.getCause().toString(), Toast.LENGTH_LONG).show();
                 }
+                 */
         }
+    }
+
+    public File createFile() throws IOException{
+        String name = System.currentTimeMillis() + "";
+
+        File storage_dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(name, ".jpg", storage_dir);
+        current_image_path = image.getAbsolutePath();
+        return image;
     }
 
     public void captureImage(View view){
         hover_dialog.dismiss();
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File image = null;
+        if(camera_intent.resolveActivity(getPackageManager()) != null){
+            try{
+                image = createFile();
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            if(image != null){
+                Uri image_uri = FileProvider.getUriForFile(this,
+                        "com.example.cassavadiseasedetection.fileprovider",
+                        image
+                );
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+            }
+        }
         startActivityForResult(camera_intent, CAM_PERM_ID);
     }
 
@@ -154,10 +226,14 @@ public class Prediction extends AppCompatActivity {
         hover_dialog.setContentView(R.layout.hover_options);
         hover_dialog.setCancelable(true);
         hover_dialog.show();
-        //Toast.makeText(this, "so..you clicked!!", Toast.LENGTH_SHORT).show();
     }
     public void predict(View view){
         String saved_as = "";
+
+        if(bmp_img_to_predict == null) {
+            Toast.makeText(getApplicationContext(), "Capture the image first", Toast.LENGTH_SHORT).show();
+            return;
+        }
         int image_tensor_index = 0;
         int[] image_shape = tflite.getInputTensor(image_tensor_index).shape();
         image_size_x = image_shape[1];
@@ -174,6 +250,7 @@ public class Prediction extends AppCompatActivity {
         probability_processor = new TensorProcessor.Builder().add(getPostProcessNormalizeOp()).build();
 
         inputImageBuffer = load_image(bmp_img_to_predict);
+
         tflite.run(inputImageBuffer.getBuffer(), output_probability_buffer.getBuffer());
 
         try{
@@ -206,6 +283,11 @@ public class Prediction extends AppCompatActivity {
     }
 
     public void addToReport(View view){
+        if(bmp_img_to_predict == null) {
+            Toast.makeText(getApplicationContext(), "Capture the image first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String prediction = txt_detected.getText().toString();
         try {
             String saved_as = savePredictedImage(bmp_img_to_predict, prediction);
@@ -215,6 +297,7 @@ public class Prediction extends AppCompatActivity {
             map.put("Cassava Green Mottle (CGM)", 2);
             map.put("Cassava Mosaic Disease (CMD)", 3);
             map.put("Healthy", 4);
+            map.put("Unknown", 5);
 
             int lbl = 0;
             if(map.get(prediction) != null)
@@ -233,8 +316,8 @@ public class Prediction extends AppCompatActivity {
 
         ImageProcessor image_processor =
                 new ImageProcessor.Builder().add(new ResizeWithCropOrPadOp(crop_size, crop_size))
-                .add(new ResizeOp(image_size_x, image_size_y, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-                .add(getPreProcessNormalize()).build();
+                        .add(new ResizeOp(image_size_x, image_size_y, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
+                        .add(getPreProcessNormalize()).build();
 
         return image_processor.process(inputImageBuffer);
     }
@@ -248,7 +331,7 @@ public class Prediction extends AppCompatActivity {
     }
 
     private MappedByteBuffer loadModel(Activity activity) throws IOException {
-        AssetFileDescriptor assetFileDescriptor = activity.getAssets().openFd("model2.tflite");
+        AssetFileDescriptor assetFileDescriptor = activity.getAssets().openFd("cassava_model.tflite");
         FileInputStream fileInputStream = new FileInputStream(assetFileDescriptor.getFileDescriptor());
         FileChannel channel = fileInputStream.getChannel();
 
@@ -311,7 +394,9 @@ public class Prediction extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Successfully updated " + file_name, Toast.LENGTH_LONG).show();
                 writer.close();
             }else{
-                csv_file.createNewFile();
+                if(csv_file.createNewFile()){
+                    Toast.makeText(getApplicationContext(), "File created for first time usage", Toast.LENGTH_LONG).show();
+                }
                 writer = new CSVWriter(new FileWriter(abs_path));
                 String[] data = {filename, String.valueOf(label)};
                 writer.writeNext(data);

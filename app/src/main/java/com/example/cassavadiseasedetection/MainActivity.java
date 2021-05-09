@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(1000);
                     startActivity(new Intent(MainActivity.this, DiseaseDetectionActivity.class));
+                    finish();
                 }catch (InterruptedException e){
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }

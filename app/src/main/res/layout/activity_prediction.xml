@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlt_detections"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,11 +17,12 @@
             android:layout_height="match_parent">
             <ImageView
                 android:onClick="showHover"
-                android:background="@drawable/cassava"
+                android:background="@drawable/add_picture_24"
                 android:layout_marginTop="20dp"
                 android:id="@+id/img_captured_plant"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"/>
+                android:tooltipText=""
+                android:layout_height="400dp"/>
             <TextView
                 android:id="@+id/txt_detected"
                 android:layout_width="wrap_content"

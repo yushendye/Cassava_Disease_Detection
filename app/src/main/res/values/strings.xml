@@ -8,7 +8,7 @@
     <string name="str_capture_btn_txt">Take picture</string>
     <string name="str_detect_btn_txt">Check the plant for disease</string>
 
-    <string name="str_new_img">Capture new image of a crop</string>
+    <string name="str_new_img">Inspect crop</string>
     <string name="str_report">View Previous reports</string>
 
     <string name="str_btn_predict">Predict</string>
@@ -22,6 +22,11 @@
 
     <string name="str_hov_capture">Capture image of cassava plant</string>
     <string name="str_hov_upload">Upload image of cassava plant</string>
+
+    <string name="str_hint_tap">Tap on the icon above to add images</string>
+
+    <string name="str_quit">Quit</string>
+    <string name="str_submit">Submit the images to the developer</string>
 
     <string name="str_cbb">Cassava Bacterial Blight (CBB)</string>
     <string name="str_cbb_info">
@@ -118,6 +123,21 @@
     <string name="str_lbl_name">Category : </string>
     <string name="str_lbl_info">Information : </string>
     <string name="str_lbl_cure">Known treatments / preventive measures : </string>
+
+    <string name="str_dev_info">
+        If you want to make contribution to this project you can share data captured by your application with us. You only need to
+        click on the button below.
+    </string>
+
+    <string name="str_dev_note">Please note : </string>
+    <string name="str_dev_note1">This action will use some of your internet data</string>
+    <string name="str_dev_note2">The data captured by this application only will be communicated with developers</string>
+    <string name="str_dev_note3">Your private data will NOT be communicated</string>
+
+
+    <string name="str_dev_email">Enter the email address for sending the data</string>
+
+    <string name="str_btn_comm">Send the reports</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.

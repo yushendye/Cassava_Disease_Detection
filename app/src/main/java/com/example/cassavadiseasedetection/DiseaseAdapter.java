@@ -14,6 +14,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.List;
 
 public class DiseaseAdapter extends RecyclerView.Adapter<DiseaseAdapter.DiseaseHolder> {
@@ -39,7 +42,9 @@ public class DiseaseAdapter extends RecyclerView.Adapter<DiseaseAdapter.DiseaseH
         disease_image = disease_item.getImage();
         disease_label = disease_item.getLabel();
 
-        holder.image.setImageBitmap(disease_item.getImage());
+        String base_dir = android.os.Environment.getExternalStorageDirectory().getAbsolutePath();
+        String abs_path = base_dir + File.separator + "DCIM" + File.separator + "Detected" + File.separator + disease_item.getImage_id();
+        Picasso.get().load("file://" + abs_path).resize(200, 200).into(holder.image);
         holder.label.setText(disease_item.getLabel());
 
         holder.rl_row.setOnClickListener(v -> {

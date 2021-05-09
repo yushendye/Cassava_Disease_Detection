@@ -21,6 +21,7 @@
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/img_list_crop"
             android:textSize="18dp"
+            android:padding="10dp"
             android:text="@string/str_predicted"
             android:textColor="@color/black"/>
     </RelativeLayout>
