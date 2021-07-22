@@ -9,4 +9,6 @@
 <strong>Output</strong>: 
 <br>
 <img src="https://github.com/yushendye/yushendye.github.io/blob/main/assets/img/cassava_op.png" class="img-bg" alt="" height="500" width="*">
+<div>
 <strong>Paper link</strong>: <a href="https://www.ijsr.net/archive/v10i7/SR21716223603.pdf">Cassava Leaf Disease Detection Paper</a>
+</div>
